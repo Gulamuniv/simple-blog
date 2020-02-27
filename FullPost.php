@@ -62,13 +62,13 @@ if (empty($name)||empty($email) ||empty($comment)) {
       <div class="collapse navbar-collapse" id="navbarcollapseCMS">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a href="Blog.php?page=1" class="nav-link">Home</a>
+          <a href="index.php?page=1" class="nav-link">Home</a>
         </li>
         <li class="nav-item">
           <a href="#" class="nav-link">About Us</a>
         </li>
         <li class="nav-item">
-          <a href="Blog.php?page=1" class="nav-link">Blog</a>
+          <a href="index.php?page=1" class="nav-link">Blog</a>
         </li>
         <li class="nav-item">
           <a href="#" class="nav-link">Contact Us</a>
@@ -78,7 +78,7 @@ if (empty($name)||empty($email) ||empty($comment)) {
         </li>
       </ul>
       <ul class="navbar-nav ml-auto">
-        <form class="form-inline d-none d-sm-block" action="Blog.php">
+        <form class="form-inline d-none d-sm-block" action="index.php">
           <div class="form-group">
           <input class="form-control mr-2" type="text" name="Search" placeholder="Search here"value="">
           <button  class="btn btn-primary" name="SearchButton">Go</button>
@@ -123,13 +123,13 @@ if (empty($name)||empty($email) ||empty($comment)) {
             $postForm = $_GET['id'];
             if (!isset($postForm)) {
               $_SESSION['ErrorMessage'] ="Bad Request!";
-              redirect_to("Blog.php?page=1");
+              redirect_to("index.php?page=1");
             }
               $sql ="SELECT * FROM posts where id={$postForm}";
             $result = mysqli_query($conn,$sql) or die("Qery Failed");
            if (mysqli_num_rows($result)!=1) {
               $_SESSION["ErrorMessage"]="Bad Request!";
-              Redirect_to("Blog.php?page=1");
+              Redirect_to("index.php?page=1");
             }
              if (mysqli_num_rows($result)>0) {
 
@@ -148,7 +148,7 @@ if (empty($name)||empty($email) ||empty($comment)) {
             <img src="Uploads/<?php echo htmlentities($Image);?>" style ="min-height: 100px; min-width: 100px;"class="img-fluid card-img-top"/>
             <div class="card-body">
               <h4 class="card-title"><?php echo htmlentities($PostTitle);?></h4>
-              <small class="text-muted">Category:<a href="Blog.php?category=<?php echo htmlentities($Category); ?>"><?php echo ($Category);?></a>:Written by:<span class="text-dark"><a href="profile.php?username=<?php echo htmlentities($Admin);?>"><?php echo htmlentities($Admin);?></a></span> On <span class="text-dark"><?php echo htmlentities($DateTime);?></span></small>
+              <small class="text-muted">Category:<a href="index.php?category=<?php echo htmlentities($Category); ?>"><?php echo ($Category);?></a>:Written by:<span class="text-dark"><a href="profile.php?username=<?php echo htmlentities($Admin);?>"><?php echo htmlentities($Admin);?></a></span> On <span class="text-dark"><?php echo htmlentities($DateTime);?></span></small>
              
               <hr>
               <p class="card-text">

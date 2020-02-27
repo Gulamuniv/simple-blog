@@ -59,6 +59,20 @@ $DateTime=strftime("%B-%d-%Y %H:%M:%S",$CurrentTime);
  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <link rel="stylesheet" href="Css/styles.css">
+  <style type="text/css">
+    .page-link{
+      color: red;
+    }
+    a.page-link{
+      background: cyan!important;
+    }
+    .backlink{
+      background: red;
+    }
+    .page-item.active .page-link{
+      background-color: #ff00b1!important;
+    } 
+  </style>
 <body>
 <!-- NAVBAR -->
 <?php require_once("Includes/nav.php");?>
@@ -125,8 +139,18 @@ $DateTime=strftime("%B-%d-%Y %H:%M:%S",$CurrentTime);
               </tr>
             </thead>
             <?php 
-             $sql  = "SELECT * FROM posts ORDER BY id desc";
-             $result = mysqli_query($conn,$sql) or die("Qery Failed");
+            if(isset($_GET["page"])){
+              $Page = $_GET["page"];
+            if($Page==0||$Page<1){
+            $ShowPostFrom=0;
+             
+             }else{
+              $ShowPostFrom=($Page*2)-2;
+             }
+              $sql ="SELECT * FROM posts ORDER BY id DESC LIMIT {$ShowPostFrom},2";
+              $result = mysqli_query($conn,$sql) or die("Qery Failed");
+            
+             
             $num=0;
              if (mysqli_num_rows($result)>0) {
                
@@ -189,13 +213,61 @@ $DateTime=strftime("%B-%d-%Y %H:%M:%S",$CurrentTime);
 
               </tr>
             </tbody>
-          <?php }
+          <?php }}
           } ?>
           </table>
         </div>
       </div>
     </section>
-      
+     <!-- Pagination -->
+      <div class="justify-content-around" style="margin-left: 400px;" >
+         <nav>
+            <ul class="pagination pagination-lg">
+              <!-- Creating Backward Button -->
+       <?php $Page = $_GET["page"]; 
+        
+               if(isset($Page) ) {
+                if ( $Page>1) {?>
+             <li class="page-item">
+                 <a href="Posts.php?page=<?php  echo $Page-1; ?>" class="page-link">Pri&laquo;</a>
+               </li>
+             <?php } }?>
+            <?php
+           
+            $sql           = "SELECT COUNT(*) FROM posts";
+            $resultsCount   =mysqli_query($conn,$sql);
+            $RowPagination = mysqli_fetch_assoc($resultsCount);
+            $TotalPosts    = array_shift($RowPagination);
+            // echo $TotalPosts."<br>";
+            $PostPagination=$TotalPosts/2;
+            $PostPagination=ceil($PostPagination);
+            // echo $PostPagination;
+            for ($i=1; $i <=$PostPagination ; $i++) {
+              if(isset($Page) ){
+                if ($i == $Page) {  ?>
+              <li class="page-item active">
+                <a href="Posts.php?page=<?php  echo $i; ?>" class="page-link backlink"><?php  echo $i; ?></a>
+              </li>
+              <?php
+            }else {
+              ?>  <li class="page-item">
+                  <a href="Posts.php?page=<?php  echo $i; ?>" class="page-link"><?php  echo $i; ?></a>
+                </li>
+            <?php  }
+          } } ?>
+          <!-- Creating Forward Button -->
+          <?php if (isset($Page) && !empty($Page) ) {
+            if ($Page+1 <= $PostPagination) {?>
+         <li class="page-item">
+             <a href="Posts.php?page=<?php  echo $Page+1; ?>" class="page-link">&raquo;Next</a>
+           </li>
+         <?php } }?>
+            </ul>
+          </nav>
+       
+       </div>
+          
+          <!-- Pagination End -->
      <!------ Main Area End------>
 <br>
     <!-- FOOTER -->

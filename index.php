@@ -11,6 +11,23 @@ require_once("Includes/Session.php");
  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <link rel="stylesheet" href="Css/styles.css">
+  <style type="text/css">
+    .pagination{
+      
+    }
+    .page-link{
+      color: red;
+    }
+    a.page-link{
+      background: cyan!important;
+    }
+    .backlink{
+      background: red;
+    }
+    .page-item.active .page-link{
+      background-color: #ff00b1!important;
+    } 
+  </style>
 <body>
 <!-- NAVBAR -->
   <div style="height:10px; background:#27aae1;"></div>
@@ -23,13 +40,13 @@ require_once("Includes/Session.php");
       <div class="collapse navbar-collapse" id="navbarcollapseCMS">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a href="Blog.php?page=1" class="nav-link">Home</a>
+          <a href="index.php?page=1" class="nav-link">Home</a>
         </li>
         <li class="nav-item">
           <a href="#" class="nav-link">About Us</a>
         </li>
         <li class="nav-item">
-          <a href="Blog.php?page=1" class="nav-link">Blog</a>
+          <a href="index.php?page=1" class="nav-link">Blog</a>
         </li>
         <li class="nav-item">
           <a href="#" class="nav-link">Contact Us</a>
@@ -39,7 +56,7 @@ require_once("Includes/Session.php");
         </li>
       </ul>
       <ul class="navbar-nav ml-auto">
-        <form class="form-inline d-none d-sm-block" action="Blog.php" method="get">
+        <form class="form-inline d-none d-sm-block" action="index.php" method="get">
           <div class="form-group">
           <input class="form-control mr-2" type="text" name="Search" placeholder="Search here"value="">
           <button  class="btn btn-primary" name="SearchButton">Go</button>
@@ -122,7 +139,7 @@ require_once("Includes/Session.php");
             <img src="Uploads/<?php echo htmlentities($Image);?>" style ="min-height: 100px; min-width: 100px;"class="img-fluid card-img-top"/>
             <div class="card-body">
               <h4 class="card-title"><?php echo htmlentities($PostTitle);?></h4>
-            <small class="text-muted">Category:<a href="Blog.php?category=<?php echo htmlentities($Category); ?>"><?php echo ($Category);?></a>:Written by:<span class="text-dark"><a href="profile.php?username=<?php echo htmlentities($Admin);?>"><?php echo htmlentities($Admin);?></a></span> On <span class="text-dark"><?php echo htmlentities($DateTime);?></span></small>
+            <small class="text-muted">Category:<a href="index.php?category=<?php echo htmlentities($Category); ?>"><?php echo ($Category);?></a>:Written by:<span class="text-dark"><a href="profile.php?username=<?php echo htmlentities($Admin);?>"><?php echo htmlentities($Admin);?></a></span> On <span class="text-dark"><?php echo htmlentities($DateTime);?></span></small>
               <span style="float:right;" class="badge badge-dark text-light">Comments:<?php echo ApproveCommnetAsPosts($postId);?></span>
               <hr>
               <p class="card-text">
@@ -143,47 +160,8 @@ require_once("Includes/Session.php");
            }?>
 
            <!-- Pagination -->
-           <nav>
-            <ul class="pagination pagination-lg">
-              <!-- Creating Backward Button -->
-              <?php if(isset($Page) ) {
-                if ( $Page>1) {?>
-             <li class="page-item">
-                 <a href="Blog.php?page=<?php  echo $Page-1; ?>" class="page-link">&laquo;</a>
-               </li>
-             <?php } }?>
-            <?php
-           
-            $sql           = "SELECT COUNT(*) FROM posts";
-            $resultsCount   =mysqli_query($conn,$sql);
-            $RowPagination = mysqli_fetch_assoc($resultsCount);
-            $TotalPosts    = array_shift($RowPagination);
-            // echo $TotalPosts."<br>";
-            $PostPagination=$TotalPosts/2;
-            $PostPagination=ceil($PostPagination);
-            // echo $PostPagination;
-            for ($i=1; $i <=$PostPagination ; $i++) {
-              if(isset($Page) ){
-                if ($i == $Page) {  ?>
-              <li class="page-item active">
-                <a href="Blog.php?page=<?php  echo $i; ?>" class="page-link"><?php  echo $i; ?></a>
-              </li>
-              <?php
-            }else {
-              ?>  <li class="page-item">
-                  <a href="Blog.php?page=<?php  echo $i; ?>" class="page-link"><?php  echo $i; ?></a>
-                </li>
-            <?php  }
-          } } ?>
-          <!-- Creating Forward Button -->
-          <?php if (isset($Page) && !empty($Page) ) {
-            if ($Page+1 <= $PostPagination) {?>
-         <li class="page-item">
-             <a href="Blog.php?page=<?php  echo $Page+1; ?>" class="page-link">&raquo;</a>
-           </li>
-         <?php } }?>
-            </ul>
-          </nav>
+          <?php require_once('Includes/pagination.php')?>
+          
           <!-- Pagination End -->
          </div>
          <!-- Main Area End-->

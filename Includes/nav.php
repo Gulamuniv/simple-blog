@@ -14,7 +14,7 @@
           <a href="Dashboard.php" class="nav-link">Dashboard</a>
         </li>
         <li class="nav-item">
-          <a href="Posts.php" class="nav-link">Posts</a>
+          <a href="Posts.php?page=1" class="nav-link">Posts</a>
         </li>
         <li class="nav-item">
           <a href="Categories.php" class="nav-link">Categories</a>
@@ -26,7 +26,7 @@
           <a href="Comments.php" class="nav-link">Comments</a>
         </li>
         <li class="nav-item">
-          <a href="Blog.php?page=1" class="nav-link" target="_blank">Live Blog</a>
+          <a href="index.php?page=1" class="nav-link" target="_blank">Live Blog</a>
         </li>
       </ul>
       <ul class="navbar-nav ml-auto">
